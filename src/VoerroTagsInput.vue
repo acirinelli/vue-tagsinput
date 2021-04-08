@@ -573,12 +573,12 @@ export default {
             }
 
             if (this.oldInput != this.input || (!this.searchResults.length && this.typeaheadActivationThreshold == 0) || this.typeaheadAlwaysShow || this.typeaheadShowOnFocus) {
-                if (!this.typeaheadUrl.length && !this.typeaheadCallback) {
-                    this.searchResults = [];
-                }
-
                 this.searchSelection = 0;
                 let input = this.input.trim();
+
+                if (!input.length && !this.typeaheadCallback) {
+                    this.searchResults = [];
+                }
 
                 if ((input.length && input.length >= this.typeaheadActivationThreshold) || this.typeaheadActivationThreshold == 0 || this.typeaheadAlwaysShow) {
                     // Find all the existing tags which include the search text
@@ -627,12 +627,13 @@ export default {
         doSearch(searchQuery) {
             this.searchResults = [];
 
-            for (let tag of this.typeaheadTags) {
+            if (this.typeaheadUrl.length > 0) {
+                this.searchResults.push(tag);
+            } else {
                 const compareable = this.caseSensitiveTags
-                    ? tag[this.textField]
-                    : tag[this.textField].toLowerCase();
+                  ? tag[this.textField]
+                  : tag[this.textField].toLowerCase();
                 const ids = this.searchResults.map((res) => (res[this.idField]));
-
                 if (compareable.search(searchQuery) > -1 && ! this.tagSelected(tag) && ! ids.includes(tag[this.idField])) {
                     this.searchResults.push(tag);
                 }
