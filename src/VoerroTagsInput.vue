@@ -399,7 +399,7 @@ export default {
          * @returns String
          */
         escapeRegExp(string) {
-            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            return string.replace('&', '%26').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         },
 
         /**
